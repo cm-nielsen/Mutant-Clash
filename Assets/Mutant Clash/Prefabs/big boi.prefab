@@ -105,3 +105,4 @@ MonoBehaviour:
   pushAnticipationSprite: {fileID: 2089709860, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
   pushSprite: {fileID: -129519518, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
   defeatedSprite: {fileID: -1959359978, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
+  defeatedUnitPrefab: {fileID: 2038948396819122505, guid: 617ef32ec81ef3e49be3e7b683cb0f4d, type: 3}

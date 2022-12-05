@@ -1024,8 +1024,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae3bba6f258db74383d55e4e92de692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDisplayTime: 1
-  placementDisplayTime: 1
+  unitDisplayTime: 4
+  placementDisplayTime: 4
   timerDisplay: {fileID: 1832056941}
   delayImage: {fileID: 1275480663}
   lanePositions:
@@ -2382,8 +2382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae3bba6f258db74383d55e4e92de692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDisplayTime: 1
-  placementDisplayTime: 1
+  unitDisplayTime: 4
+  placementDisplayTime: 4
   timerDisplay: {fileID: 852610615}
   delayImage: {fileID: 1457138039}
   lanePositions:
@@ -6631,7 +6631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e109fb255f7ff94286ab9db1141eea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMoveSpeed: 0.5
+  baseMoveSpeed: 0.75
   collisionDistance: 1.5
   scoreDistance: 10.5
 --- !u!1 &2014640775

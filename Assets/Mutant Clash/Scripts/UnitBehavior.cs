@@ -14,6 +14,8 @@ public class UnitBehavior : MonoBehaviour
     public Sprite pushSprite;
     public Sprite defeatedSprite;
 
+    public GameObject defeatedUnitPrefab;
+
     public Vector2 position => transform.position;
 
     SpriteRenderer spriteRenderer;
@@ -116,6 +118,9 @@ public class UnitBehavior : MonoBehaviour
 
     void OnDeath()
     {
+        DefeatedUnit defeatedInstance = Instantiate(defeatedUnitPrefab).GetComponent<DefeatedUnit>();
+        defeatedInstance.Init(position, defeatedSprite, movingLeft ? Vector2.right : Vector2.left);
+
         Destroy(gameObject);
     }
 

@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf613b1bebe6b994d85fad1c9f097c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  pushStrength: 5
-  decayLerp: 0.05
-  killThreshold: 0.1
+  spriteRenderer: {fileID: 4420522173839125135}
+  pushStrength: 0.3
+  decayLerp: 0.1
+  killThreshold: 0.04

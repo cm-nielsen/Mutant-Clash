@@ -145,5 +145,6 @@ public class BattleManager : MonoBehaviour
         active = true;
 
         lanes[lane].Add(unit);
+        unit.transform.SetParent(transform);
     }
 }
