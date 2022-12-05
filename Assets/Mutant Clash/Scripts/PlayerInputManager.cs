@@ -14,6 +14,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public Vector2[] lanePositions;
 
+    public Color[] possibleColors;
     public Color playerColour;
 
     public bool moveLeft = false;
@@ -57,6 +58,8 @@ public class PlayerInputManager : MonoBehaviour
 
     void Start()
     {
+        playerColour = possibleColors[Random.Range(0, possibleColors.Length)];
+
         bciController = FindObjectOfType<P300Controller>();
         battleManager = FindObjectOfType<BattleManager>();
 

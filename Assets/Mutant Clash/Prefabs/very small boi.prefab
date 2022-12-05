@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1836176492112993370}
   - component: {fileID: 2555016097469255725}
   m_Layer: 0
-  m_Name: big boi
+  m_Name: very small boi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 412655192, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
+  m_Sprite: {fileID: 167200575, guid: 6b659c438c73c924db1e29345da96492, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.75, y: 1.5}
+  m_Size: {x: 2, y: 1.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -98,10 +98,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    speed: 1
-    health: 4
-    cost: 3
-  idleSprite: {fileID: 412655192, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
-  pushAnticipationSprite: {fileID: 2089709860, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
-  pushSprite: {fileID: -129519518, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
-  defeatedSprite: {fileID: -1959359978, guid: 2adf9d604f37c7141a31279f085d0516, type: 3}
+    speed: 2
+    health: 1
+    cost: 1
+  idleSprite: {fileID: 167200575, guid: 6b659c438c73c924db1e29345da96492, type: 3}
+  pushAnticipationSprite: {fileID: 2124461076, guid: 6b659c438c73c924db1e29345da96492, type: 3}
+  pushSprite: {fileID: -88166436, guid: 6b659c438c73c924db1e29345da96492, type: 3}
+  defeatedSprite: {fileID: -910091687, guid: 6b659c438c73c924db1e29345da96492, type: 3}

@@ -9,6 +9,7 @@ public class BattleManager : MonoBehaviour
 {
     public static bool active = true;
 
+    public float baseMoveSpeed = 1.5f;
     public float collisionDistance = 1;
     public float scoreDistance = 10;
 
@@ -33,6 +34,8 @@ public class BattleManager : MonoBehaviour
 
         winScreen = FindObjectOfType<WinScreen>();
         winScreen.gameObject.SetActive(false);
+
+        active = false;
     }
 
 
@@ -60,7 +63,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (UnitBehavior unit in lane)
         {
-            UnitBehavior collision = unit.MoveAndCollide(lane, collisionDistance);
+            UnitBehavior collision = unit.MoveAndCollide(baseMoveSpeed, lane, collisionDistance);
 
             if (collision)
             {

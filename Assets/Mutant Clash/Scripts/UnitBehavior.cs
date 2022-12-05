@@ -6,7 +6,6 @@ public class UnitBehavior : MonoBehaviour
 {
     public UnitStats stats;
 
-    public float baseMoveSpeed;
     bool movingLeft;
 
     [Header("sprites")]
@@ -34,7 +33,7 @@ public class UnitBehavior : MonoBehaviour
         spriteRenderer.color = colour;
     }
 
-    public UnitBehavior MoveAndCollide(List<UnitBehavior> lane, float collisionDistance)
+    public UnitBehavior MoveAndCollide(float baseMoveSpeed, List<UnitBehavior> lane, float collisionDistance)
     {
         Vector2 baseVelocity = Time.deltaTime * baseMoveSpeed *
             (movingLeft ? Vector2.left : Vector2.right);
@@ -43,9 +42,6 @@ public class UnitBehavior : MonoBehaviour
         {
             if(unit != this)
             {
-                // would move into other unit (not behind)
-                //if (Vector2.Distance(position + baseVelocity, unit.position) < collisionDistance &&
-                //    Vector2.Distance(position - baseVelocity, unit.position) >= collisionDistance)
                 if (IsCollidingWith(baseVelocity, unit, collisionDistance))
                 {
                     if (movingLeft == unit.movingLeft)

@@ -74,15 +74,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 327962443, guid: 70da640379e2954478f7e4d798bbfd03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &2555016097469255725
@@ -100,9 +100,7 @@ MonoBehaviour:
   stats:
     speed: 2
     health: 2
-    cost: 1
-  baseMoveSpeed: 1
-  movingLeft: 0
+    cost: 2
   idleSprite: {fileID: 327962443, guid: 70da640379e2954478f7e4d798bbfd03, type: 3}
   pushAnticipationSprite: {fileID: -1455609756, guid: 70da640379e2954478f7e4d798bbfd03, type: 3}
   pushSprite: {fileID: -829189215, guid: 70da640379e2954478f7e4d798bbfd03, type: 3}
