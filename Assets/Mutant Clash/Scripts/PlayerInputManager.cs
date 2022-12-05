@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -9,15 +10,19 @@ public class PlayerInputManager : MonoBehaviour
     public float placementDisplayTime;
 
     public TimerBar timerDisplay;
+    public Image delayImage;
 
     public Vector2[] lanePositions;
 
     public Color playerColour;
 
     public bool moveLeft = false;
-    public bool useBCI = true;
+
+    public enum PlayerType { Bci, Mouse, AI}
+    public PlayerType playerType;
 
     public float startingOffset;
+    public float unitCostMultiplier = 3;
 
     UnitSelector unitSelector;
     UnitPlacer unitPlacer;
@@ -25,7 +30,7 @@ public class PlayerInputManager : MonoBehaviour
     P300Controller bciController;
     BattleManager battleManager;
 
-    float battleTimer;
+    float selectionDelay;
 
     GameObject selectedUnitPrefab;
     int selectedLane;
@@ -64,9 +69,12 @@ public class PlayerInputManager : MonoBehaviour
         unitPlacer.Init();
         unitPlacer.onComplete = OnPlacementSelected;
 
-        battleTimer = startingOffset;
+        selectionDelay = startingOffset;
 
-        if (battleTimer <= 0)
+        delayImage.color = playerColour;
+        ShowDelay(selectionDelay);
+
+        if (selectionDelay <= 0)
             ShowUnits();
     }
 
@@ -81,20 +89,21 @@ public class PlayerInputManager : MonoBehaviour
                 switch (state)
                 {
                     case State.ShowingUnits:
-                        StartUnitSelection();
+                        StartSelection(State.SelectingUnits, unitSelector);
                         break;
                     case State.ShowingPlacements:
-                        StartPlacementSelection();
+                        StartSelection(State.SelectingPlacement, unitPlacer);
                         break;
                 }
             }
         }
-        else if (BattleManager.active && battleTimer > 0)
+        else if (BattleManager.active && selectionDelay > 0)
         {
             // do battle stuff
-            battleTimer -= Time.deltaTime;
+            selectionDelay -= Time.deltaTime;
+            ShowDelay(selectionDelay);
 
-            if(battleTimer <= 0)
+            if(selectionDelay <= 0)
             {
                 ShowUnits();
             }
@@ -106,7 +115,8 @@ public class PlayerInputManager : MonoBehaviour
         // spawn unit
         UnitBehavior unitInstance = Instantiate(selectedUnitPrefab).GetComponent<UnitBehavior>();
         unitInstance.transform.position = lanePositions[selectedLane];
-        battleTimer += unitInstance.stats.cost * 2;
+        selectionDelay += unitInstance.stats.cost * unitCostMultiplier;
+        ShowDelay(selectionDelay);
         unitInstance.Init(moveLeft, playerColour);
 
         // unpause
@@ -117,6 +127,8 @@ public class PlayerInputManager : MonoBehaviour
     void OnUnitSelected(GameObject unitPrefab)
     {
         selectedUnitPrefab = unitPrefab;
+
+        ShowDelay(unitPrefab.GetComponent<UnitBehavior>().stats.cost * unitCostMultiplier);
 
         ShowPlacements();
     }
@@ -130,30 +142,34 @@ public class PlayerInputManager : MonoBehaviour
 
     void ShowUnits()
     {
-        state = State.ShowingUnits;
+        // pause unit actions
         BattleManager.active = false;
+
+        // for mouse player skip showing, go right to selection
+        if(playerType == PlayerType.Mouse)
+        {
+            state = State.SelectingUnits;
+            return;
+        }
+
+        state = State.ShowingUnits;
         timer = unitDisplayTime;
 
-        // pause unit actions
 
         // show units and timer
         timerDisplay.StartTimer(unitDisplayTime);
         unitSelector.SetActive(true);
     }
 
-    void StartUnitSelection()
-    {
-        state = State.SelectingUnits;
-
-        if (useBCI)
-        {
-            unitSelector.TurnOffAll();
-            bciController.StartStopStimulus();
-        }
-    }
-
     void ShowPlacements()
     {
+        // for mouse player skip showing, go right to selection
+        if (playerType == PlayerType.Mouse)
+        {
+            state = State.SelectingUnits;
+            return;
+        }
+
         state = State.ShowingPlacements;
         timer = placementDisplayTime;
 
@@ -162,14 +178,23 @@ public class PlayerInputManager : MonoBehaviour
         unitPlacer.SetActive(true);
     }
 
-    void StartPlacementSelection()
+    void StartSelection<T>(State newState, SPOSelectionManager<T> selectionManager)
     {
-        state = State.SelectingPlacement;
+        state = newState;
 
-        if (useBCI)
+        if (playerType == PlayerType.Bci)
         {
-            unitPlacer.TurnOffAll();
+            selectionManager.TurnOffAll();
             bciController.StartStopStimulus();
         }
+        else if (playerType == PlayerType.AI)
+        {
+            selectionManager.SelectRandom();
+        }
+    }
+
+    void ShowDelay(float delay)
+    {
+        delayImage.fillAmount = delay / (4 * unitCostMultiplier);
     }
 }

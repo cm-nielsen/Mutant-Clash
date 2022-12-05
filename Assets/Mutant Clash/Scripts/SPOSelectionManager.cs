@@ -39,4 +39,10 @@ public class SPOSelectionManager<T> : MonoBehaviour
         SetActive(false);
         onComplete(arg);
     }
+
+    public void SelectRandom()
+    {
+        int randomIndex = Random.Range(0, selectableChildren.Length);
+        selectableChildren[randomIndex].OnSelection();
+    }
 }

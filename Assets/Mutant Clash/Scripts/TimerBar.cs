@@ -18,6 +18,12 @@ public class TimerBar : MonoBehaviour
 
     public void StartTimer(float time)
     {
+        if(time == 0)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         timer = timerMax = time - Time.deltaTime;
         barImage.fillAmount = 1;
         gameObject.SetActive(true);
