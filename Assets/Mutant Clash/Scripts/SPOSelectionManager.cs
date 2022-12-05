@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SPOSelectionManager : MonoBehaviour
+public class SPOSelectionManager<T> : MonoBehaviour
 {
-    public System.Action onComplete;
+    public System.Action<T> onComplete;
 
-    protected CallbackSPO[] selectableChildren;
+    protected CallbackSPO<T>[] selectableChildren;
 
     public void Init()
     {
-        selectableChildren = GetComponentsInChildren<CallbackSPO>();
-        foreach (CallbackSPO spo in selectableChildren)
+        selectableChildren = GetComponentsInChildren<CallbackSPO<T>>();
+        foreach (CallbackSPO<T> spo in selectableChildren)
             spo.callback = OnSelection;
 
         SetActive(false);
@@ -19,9 +19,8 @@ public class SPOSelectionManager : MonoBehaviour
 
     public void SetActive(bool active)
     {
-        print($"setting spo selection manager {gameObject.name} active: " + active);
         gameObject.SetActive(active);
-        foreach (CallbackSPO spo in selectableChildren)
+        foreach (CallbackSPO<T> spo in selectableChildren)
         {
             spo.includeMe = active;
             if (active)
@@ -31,13 +30,13 @@ public class SPOSelectionManager : MonoBehaviour
 
     public void TurnOffAll()
     {
-        foreach (CallbackSPO spo in selectableChildren)
+        foreach (CallbackSPO<T> spo in selectableChildren)
             spo.TurnOff();
     }
 
-    protected virtual void OnSelection()
+    protected virtual void OnSelection(T arg)
     {
         SetActive(false);
-        onComplete();
+        onComplete(arg);
     }
 }

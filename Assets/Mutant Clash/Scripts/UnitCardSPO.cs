@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitCardSPO : CallbackSPO
+public class UnitCardSPO : CallbackSPO<GameObject>
 {
     [Header("unit card settings")]
     public float selectScale = 2;
@@ -17,13 +17,13 @@ public class UnitCardSPO : CallbackSPO
     public GameObject unitPrefab;
     public SpriteRenderer characterSpriteRenderer;
 
-    Image baseImage;
-    CanvasGroup canvasGroup;
+    public Image baseImage;
+    public CanvasGroup canvasGroup;
 
     void Start()
     {
-        canvasGroup = GetComponentInChildren<CanvasGroup>();
-        baseImage = GetComponent<Image>();
+        //canvasGroup = GetComponentInChildren<CanvasGroup>(true);
+        //baseImage = GetComponent<Image>();
 
         UnitBehavior targetUnit = unitPrefab.GetComponent<UnitBehavior>();
 
@@ -61,9 +61,7 @@ public class UnitCardSPO : CallbackSPO
     public override void OnSelection()
     {
         // ready unit for spawn, waiting on location
-        GameLoop.selectedUnitPrefab = unitPrefab;
-
-        base.OnSelection();
+        callback(unitPrefab);
     }
 }
 

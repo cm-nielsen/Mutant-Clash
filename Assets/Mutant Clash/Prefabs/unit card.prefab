@@ -237,6 +237,8 @@ MonoBehaviour:
   costBar: {fileID: 8688086413466417481}
   unitPrefab: {fileID: 4064636609930985372, guid: 73e690d84a37ccc42824c4a9ea8cfbcb, type: 3}
   characterSpriteRenderer: {fileID: 2001519929153961659}
+  baseImage: {fileID: 5544429036355509067}
+  canvasGroup: {fileID: 3328865117619064369}
 --- !u!222 &2444777782008937267
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -288,7 +290,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5544429036355509067}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2001519929404318241}
+        m_TargetAssemblyTypeName: UnitCardSPO, Assembly-CSharp
+        m_MethodName: OnSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5544429036355509067
 MonoBehaviour:
   m_ObjectHideFlags: 0

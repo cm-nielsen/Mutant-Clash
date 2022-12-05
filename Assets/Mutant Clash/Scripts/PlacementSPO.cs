@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlacementSPO : CallbackSPO
+public class PlacementSPO : CallbackSPO<int>
 {
     Image image;
 
@@ -32,8 +32,6 @@ public class PlacementSPO : CallbackSPO
     public override void OnSelection()
     {
         // place spawned unit
-        GameLoop.selectedLane = myIndex;
-
-        base.OnSelection();
+        callback(myIndex);
     }
 }

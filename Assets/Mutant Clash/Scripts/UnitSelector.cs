@@ -2,18 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitSelector : SPOSelectionManager
+public class UnitSelector : SPOSelectionManager<GameObject>
 {
     public void SetUnitColour(Color colour)
     {
-        foreach (CallbackSPO spo in selectableChildren)
+        foreach (CallbackSPO<GameObject> spo in selectableChildren)
         {
             (spo as UnitCardSPO).SetUnitColour(colour);
         }
-    }
-
-    protected override void OnSelection()
-    {
-        base.OnSelection();
     }
 }

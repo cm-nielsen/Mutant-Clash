@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitPlacer : SPOSelectionManager
+public class UnitPlacer : SPOSelectionManager<int>
 {
 
-    protected override void OnSelection()
-    {
-        base.OnSelection();
-
-    }
 }

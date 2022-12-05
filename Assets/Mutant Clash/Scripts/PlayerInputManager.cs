@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
-public class GameLoop : MonoBehaviour
+public class PlayerInputManager : MonoBehaviour
 {
     public float unitDisplayTime;
     public float placementDisplayTime;
@@ -13,21 +14,24 @@ public class GameLoop : MonoBehaviour
 
     public Color playerColour;
 
+    public bool moveLeft = false;
     public bool useBCI = true;
+
+    public float startingOffset;
 
     UnitSelector unitSelector;
     UnitPlacer unitPlacer;
 
     P300Controller bciController;
+    BattleManager battleManager;
 
-    [HideInInspector]
-    public float battleTimer;
+    float battleTimer;
 
-    public static GameObject selectedUnitPrefab;
-    public static int selectedLane;
+    GameObject selectedUnitPrefab;
+    int selectedLane;
     float timer;
 
-    public enum GameState
+    public enum State
     {
         ShowingUnits,
         SelectingUnits,
@@ -35,31 +39,35 @@ public class GameLoop : MonoBehaviour
         SelectingPlacement,
         Battle
     }
-    public GameState state;
+    public State state;
 
 
     private void OnDrawGizmos()
     {
         foreach (Vector2 pos in lanePositions)
         {
-            Gizmos.DrawRay(pos, Vector3.right);
+            Gizmos.DrawRay(pos, moveLeft ? Vector3.left : Vector3.right);
         }
     }
 
     void Start()
     {
         bciController = FindObjectOfType<P300Controller>();
+        battleManager = FindObjectOfType<BattleManager>();
 
         unitSelector = GetComponentInChildren<UnitSelector>();
         unitSelector.Init();
         unitSelector.SetUnitColour(playerColour);
-        unitSelector.onComplete = ShowPlacements;
+        unitSelector.onComplete = OnUnitSelected;
 
         unitPlacer = GetComponentInChildren<UnitPlacer>();
         unitPlacer.Init();
-        unitPlacer.onComplete = StartBattle;
+        unitPlacer.onComplete = OnPlacementSelected;
 
-        ShowUnits();
+        battleTimer = startingOffset;
+
+        if (battleTimer <= 0)
+            ShowUnits();
     }
 
     void Update()
@@ -72,16 +80,16 @@ public class GameLoop : MonoBehaviour
             {
                 switch (state)
                 {
-                    case GameState.ShowingUnits:
+                    case State.ShowingUnits:
                         StartUnitSelection();
                         break;
-                    case GameState.ShowingPlacements:
+                    case State.ShowingPlacements:
                         StartPlacementSelection();
                         break;
                 }
             }
         }
-        else if (battleTimer > 0)
+        else if (BattleManager.active && battleTimer > 0)
         {
             // do battle stuff
             battleTimer -= Time.deltaTime;
@@ -98,27 +106,44 @@ public class GameLoop : MonoBehaviour
         // spawn unit
         UnitBehavior unitInstance = Instantiate(selectedUnitPrefab).GetComponent<UnitBehavior>();
         unitInstance.transform.position = lanePositions[selectedLane];
-        battleTimer += unitInstance.stats.cost;
-        unitInstance.Init(false, playerColour);
+        battleTimer += unitInstance.stats.cost * 2;
+        unitInstance.Init(moveLeft, playerColour);
 
         // unpause
-        state = GameState.Battle;
+        state = State.Battle;
+        battleManager.AddUnitToLane(unitInstance, selectedLane);
+    }
 
+    void OnUnitSelected(GameObject unitPrefab)
+    {
+        selectedUnitPrefab = unitPrefab;
+
+        ShowPlacements();
+    }
+
+    void OnPlacementSelected(int laneIndex)
+    {
+        selectedLane = laneIndex;
+
+        StartBattle();
     }
 
     void ShowUnits()
     {
-        state = GameState.ShowingUnits;
+        state = State.ShowingUnits;
+        BattleManager.active = false;
         timer = unitDisplayTime;
-        timerDisplay.StartTimer(unitDisplayTime);
+
+        // pause unit actions
 
         // show units and timer
+        timerDisplay.StartTimer(unitDisplayTime);
         unitSelector.SetActive(true);
     }
 
     void StartUnitSelection()
     {
-        state = GameState.SelectingUnits;
+        state = State.SelectingUnits;
 
         if (useBCI)
         {
@@ -129,27 +154,22 @@ public class GameLoop : MonoBehaviour
 
     void ShowPlacements()
     {
-        print("Show placements called");
-        state = GameState.ShowingPlacements;
+        state = State.ShowingPlacements;
         timer = placementDisplayTime;
-        timerDisplay.StartTimer(placementDisplayTime);
 
         // show placements and timer
+        timerDisplay.StartTimer(placementDisplayTime);
         unitPlacer.SetActive(true);
-        print("end of show placements");
     }
 
     void StartPlacementSelection()
     {
-        print("start placement selection called");
-        state = GameState.SelectingPlacement;
+        state = State.SelectingPlacement;
 
         if (useBCI)
         {
             unitPlacer.TurnOffAll();
             bciController.StartStopStimulus();
         }
-
-        print("end of start placement selection");
     }
 }
